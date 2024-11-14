@@ -2,6 +2,8 @@ import mongoose from "mongoose";
 import dotenv from "dotenv";
 import express from "express";
 import cors from "cors";
+import userRoutes from "./routes/userRoutes";
+import todoRoutes from "./routes/todoRoutes";
 
 dotenv.config();
 
@@ -13,15 +15,13 @@ app.use(cors({ exposedHeaders: ["Authorization"] }));
 
 app.use(express.json());
 
-// MongoDB connection setup
 mongoose
-  .connect("mongodb+srv://admin:admin@mongotodo.gb7kb.mongodb.net/")
+  .connect("mongodb+srv://admin:admin@mongotodo.gb7kb.mongodb.net/todoapp")
   .then(() => console.log("Connected to MongoDB"))
   .catch((err: any) => console.error("Database connection error: ", err));
 
-app.get("/", (req, res) => {
-  res.send("Hello World");
-});
+app.use("/todos", todoRoutes);
+app.use("/users", userRoutes);
 
 // Start the server
 app.listen(port, () => {
